@@ -74,6 +74,10 @@ table, th, td {
 	border-collapse: collapse;
 }
 
+td:first-child, td:last-child {
+	text-align:right;
+}
+
 thead {
 	color: black;
 	background-color: white;
