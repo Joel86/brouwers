@@ -1,6 +1,7 @@
 package be.vdab.repositories;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +28,7 @@ class InMemoryBrouwerRepository implements BrouwerRepository {
 	}
 	@Override
 	public void create(Brouwer brouwer) {
+		brouwer.setBrouwerNr(Collections.max(brouwers.keySet()) + 1);
 		brouwers.put(brouwer.getBrouwerNr(), brouwer);
 	}
 	@Override
