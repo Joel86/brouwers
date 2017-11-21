@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import be.vdab.entities.Brouwer;
 import be.vdab.valueobjects.Adres;
+import be.vdab.valueobjects.BrouwerBeginnaam;
 
 @Repository
 class InMemoryBrouwerRepository implements BrouwerRepository {
@@ -41,5 +43,13 @@ class InMemoryBrouwerRepository implements BrouwerRepository {
 			}
 		}
 		return brouwersByNaam;
+	}
+	@Override
+	public List<Brouwer> findByBeginnaam(BrouwerBeginnaam beginnaam) {
+		return brouwers.values().stream()
+				.filter(brouwer -> brouwer.getNaam()
+						.toLowerCase()
+						.startsWith(beginnaam.getBeginnaam().toLowerCase()))
+				.collect(Collectors.toList());
 	}
 }

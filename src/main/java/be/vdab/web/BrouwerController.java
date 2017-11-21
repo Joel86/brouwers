@@ -1,12 +1,16 @@
 package be.vdab.web;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import be.vdab.services.BrouwerService;
+import be.vdab.valueobjects.BrouwerBeginnaam;
 
 @Controller
 @RequestMapping("/brouwers")
@@ -28,8 +32,17 @@ class BrouwerController {
 		return new ModelAndView(BROUWERS_VIEW, "brouwers", brouwerService.findAll());
 	}
 	@GetMapping("beginnaam")
-	String beginnaam() {
-		return BEGINNNAAM_VIEW;
+	ModelAndView findByBeginnaamForm() {
+		BrouwerBeginnaam beginnaam = new BrouwerBeginnaam();
+		return new ModelAndView(BEGINNNAAM_VIEW).addObject(beginnaam);
+	}
+	@GetMapping(params = "beginnaam")
+	ModelAndView findByBeginnaam(@Valid BrouwerBeginnaam beginnaam, BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView(BEGINNNAAM_VIEW);
+		if(!bindingResult.hasErrors()) {
+			modelAndView.addObject("brouwers", brouwerService.findByBeginnaam(beginnaam));
+		}
+		return modelAndView;
 	}
 	@GetMapping("toevoegen")
 	String toevoegForm() {
