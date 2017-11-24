@@ -25,7 +25,7 @@
     <tbody>
       <c:forEach items='${brouwers}' var='brouwer'>
         <tr>
-          <td>${brouwer.brouwerNr}</td>
+          <td>${brouwer.id}</td>
           <td>${brouwer.naam}</td>
           <td>${brouwer.adres.straat}</td>
           <td>${brouwer.adres.huisNr}</td>

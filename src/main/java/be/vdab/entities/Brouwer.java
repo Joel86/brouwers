@@ -13,7 +13,7 @@ import be.vdab.valueobjects.Adres;
 
 public class Brouwer implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private long brouwerNr;
+	private long id;
 	@NotBlank @SafeHtml
 	private String naam;
 	@Min(0)
@@ -23,16 +23,16 @@ public class Brouwer implements Serializable {
 	private Adres adres;
 	public Brouwer() {}	
 	public Brouwer(long brouwerNr, String naam, Integer omzet, Adres adres) {
-		this.brouwerNr = brouwerNr;
+		this.id = brouwerNr;
 		this.naam = naam;
 		this.omzet = omzet;
 		this.adres = adres;
 	}
-	public long getBrouwerNr() {
-		return brouwerNr;
+	public long getId() {
+		return id;
 	}
-	public void setBrouwerNr(long brouwerNr) {
-		this.brouwerNr = brouwerNr;
+	public void setId(long brouwerNr) {
+		this.id = brouwerNr;
 	}
 	public String getNaam() {
 		return naam;
