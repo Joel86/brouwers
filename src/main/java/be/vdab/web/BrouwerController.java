@@ -2,6 +2,7 @@ package be.vdab.web;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,8 +34,8 @@ class BrouwerController {
 		}
 	}
 	@GetMapping
-	ModelAndView findAll() {
-		return new ModelAndView(BROUWERS_VIEW, "brouwers", brouwerService.findAll());
+	ModelAndView findAll(Pageable pageable) {
+		return new ModelAndView(BROUWERS_VIEW, "page", brouwerService.findAll(pageable));
 	}
 	@GetMapping("beginnaam")
 	ModelAndView findByBeginnaamForm() {
@@ -67,9 +68,11 @@ class BrouwerController {
 	}
 	@GetMapping(params = "letter")
 	ModelAndView opAlfabet(@RequestParam char letter) {
+		BrouwerBeginnaam beginnaam = new BrouwerBeginnaam();
+		beginnaam.setBeginnaam(String.valueOf(letter));
 		return new ModelAndView(BROUWERS_OP_ALFABET_VIEW)
 				.addObject("alfabet", alfabet)
-				.addObject("brouwers", brouwerService.findByNaam(String.valueOf(letter)));
+				.addObject("brouwers", brouwerService.findByBeginnaam(beginnaam));
 	}
 	@InitBinder("brouwer")
 	void initBinderBrouwer(WebDataBinder binder) {
