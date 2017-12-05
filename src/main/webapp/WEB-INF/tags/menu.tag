@@ -6,11 +6,19 @@
 		<li><a href="<c:url value='/'/>">&#8962;</a></li>
 		<li><a href="#">Brouwers</a>
 			<ul>
-				<li><a href="<c:url value='/brouwers'/>">Lijst</a></li>
-				<li><a href="<c:url value='/brouwers/toevoegen'/>">Toevoegen</a></li>
-				<li><a href="<c:url value='/brouwers/beginnaam'/>">Per
+				<security:authorize url='/brouwers'>
+				  <li><a href="<c:url value='/brouwers'/>">Lijst</a></li>
+				</security:authorize>
+				<security:authorize url='/brouwers/toevoegen'>
+				  <li><a href="<c:url value='/brouwers/toevoegen'/>">Toevoegen</a></li>
+				</security:authorize>
+				<security:authorize url='/brouwers/beginnaam'>
+				  <li><a href="<c:url value='/brouwers/beginnaam'/>">Per
 						beginnaam</a></li>
-				<li><a href="<c:url value='/brouwers/opalfabet'/>">Op alfabet</a></li>
+				</security:authorize>
+				<security:authorize url='/brouwers/opalfabet'>
+				  <li><a href="<c:url value='/brouwers/opalfabet'/>">Op alfabet</a></li>
+			    </security:authorize>
 			</ul>
 		</li>
 		<security:authorize access='isAnonymous()'>

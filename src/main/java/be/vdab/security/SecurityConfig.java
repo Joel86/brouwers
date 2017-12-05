@@ -8,22 +8,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String ADMINISTRATOR = "administrator";
 	private static final String USER = "user";
-	private static final String USERS_BY_USERNAME = 
-			"select naam as username, paswoord as password, actief as enabled" + 
-			" from gebruikers where naam = ?";
-	private static final String AUTHORITIES_BY_USERNAME = 
-			"select gebruikers.naam as username, rollen.naam as authorities" + 
-			" from gebruikers inner join gebruikersrollen" +
-			" on gebruikers.id = gebruikersrollen.gebruikerid" + 
-			" inner join rollen" + 
-			" on rollen.id = gebruikersrollen.rolid" + 
-			" where gebruikers.naam = ?";
 	private final DataSource dataSource;
 	public SecurityConfig(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -31,8 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-			.usersByUsernameQuery(USERS_BY_USERNAME)
-			.authoritiesByUsernameQuery(AUTHORITIES_BY_USERNAME);
+		.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -46,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin().loginPage("/login").and().logout().logoutSuccessUrl("/")
 			.and().authorizeRequests()
 			.mvcMatchers("/brouwers/toevoegen").hasAuthority(ADMINISTRATOR)
-			.mvcMatchers("/brouwers/brouwers", "/brouwers/beginnaam", "/brouwers/opalfabet")
+			.mvcMatchers("/brouwers", "/brouwers/beginnaam", "/brouwers/opalfabet")
 				.hasAnyAuthority(ADMINISTRATOR, USER)
 			.mvcMatchers("/", "/login").permitAll()
 			.and().exceptionHandling().accessDeniedPage("/WEB-INF/JSP/forbidden.jsp");
